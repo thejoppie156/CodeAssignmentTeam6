@@ -15,33 +15,45 @@ public:
 	// Sets default values for this pawn's properties
 	ATowerBase();
 
+	virtual void OnShoot();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void LookAtMouse();
-	virtual void Attack();
-
+	
 	UPROPERTY(EditAnywhere)
 	int m_MaxHealth;
 	UPROPERTY(EditAnywhere)
 	int m_Health;
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<USceneComponent> TurretPosition;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
 	TObjectPtr<UPrimitiveComponent> TurretBase;
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UTowerCannonBase> ACTurretCannon;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
+	TObjectPtr<class UTowerCannonBase> TowerCannonComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
 	TObjectPtr<UPrimitiveComponent> TurretCannon;
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
+	TObjectPtr<USceneComponent> TurretCannonAttachPoint;
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<APlayerController> m_PlayerController;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
+	TObjectPtr<USceneComponent> ProjectileSpawn;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
+	TSubclassOf<class AProjectile> m_ProjectileToSpawn;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<class USpringArmComponent> CameraBoom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<class UCameraComponent> Camera;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;	
 
+	UFUNCTION()
+	virtual float TakeDamage(float DamageAmount, const FDamageEvent& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };

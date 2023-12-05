@@ -15,7 +15,7 @@ class CODEASSIGNMENTTEAM6_API UTowerCannonBase : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTowerCannonBase();
-
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -27,8 +27,12 @@ protected:
 	float m_FireRate;
 	UPROPERTY(EditAnywhere)
 	int m_Damage;
+	
+	
+	
 
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
+	class UTurretDataAsset* TDataAsset;
 	
 public:	
 	// Called every frame
@@ -38,5 +42,7 @@ public:
 	constexpr float GetRotationSpeed() const;
 	constexpr float GetFireRate() const;
 	constexpr int GetDamage() const;
+	const TObjectPtr<class TurretDataAsset> GetTurretData() const;
 
+	float m_FireRateTimer;
 };

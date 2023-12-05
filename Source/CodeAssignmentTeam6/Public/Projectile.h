@@ -19,8 +19,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
+	TObjectPtr<UPrimitiveComponent> Projectile;
+
+	float m_RandomAngle;
+
+	UFUNCTION()
+	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	float m_ProjectileSpeed;
+	int m_Damage;
+
+	virtual void Init(int Damage, float Speed);
 };
