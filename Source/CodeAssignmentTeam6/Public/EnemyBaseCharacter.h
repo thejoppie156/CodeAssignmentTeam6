@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	int m_Damage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+	int m_ScoreAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float m_AttackRate;
 	float m_AttackTimer;
 

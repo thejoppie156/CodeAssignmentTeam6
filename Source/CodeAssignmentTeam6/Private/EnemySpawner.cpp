@@ -12,6 +12,7 @@ AEnemySpawner::AEnemySpawner() :
 	m_MoveSpeed(150),
 	m_Damage(2),
 	m_AttackRange(150),
+	m_ScoreAmount(1),
 	m_SpawnInterval(3),
 	m_SpawnTimer(0),
 	m_EnemyToSpawn(nullptr),
