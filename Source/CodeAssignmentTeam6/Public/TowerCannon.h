@@ -20,13 +20,11 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	float m_RotationSpeed;
-	UPROPERTY(EditAnywhere)
-	float m_FireRate;
+	float m_RotationSpeed;	
 	UPROPERTY(EditAnywhere)
 	int m_Damage;
-
 	UPROPERTY(EditAnywhere)
+	float m_FireRate;
 	float m_FireRateTimer;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
@@ -49,6 +47,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Fire();
+	virtual void OnMouseReleased();
 
 	void LookAtMouse();
 

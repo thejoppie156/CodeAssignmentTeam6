@@ -23,15 +23,16 @@ protected:
 	TObjectPtr<UPrimitiveComponent> Projectile;
 
 	float m_RandomAngle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	float m_ProjectileSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	int m_Damage;
 
 	UFUNCTION()
-	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);	
+	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	float m_ProjectileSpeed;
-	int m_Damage;
-
 	virtual void Init(int Damage, float Speed);
 };

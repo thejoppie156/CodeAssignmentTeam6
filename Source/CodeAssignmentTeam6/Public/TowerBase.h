@@ -16,30 +16,31 @@ public:
 	ATowerBase();
 
 	void OnShoot();
+	void OnShootReleased();
 	void OnSwapTurret(float val);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	int m_MaxHealth;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	int m_Health;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
 	TObjectPtr<UPrimitiveComponent> TurretBase;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
-	TObjectPtr<class UTowerCannonBase> TowerCannonComponent;
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
-	//TObjectPtr<UPrimitiveComponent> TurretCannon;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
 	TObjectPtr<USceneComponent> TurretCannonAttachPoint;
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<APlayerController> m_PlayerController;
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
-	//TObjectPtr<USceneComponent> ProjectileSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
+	TObjectPtr<class ATowerCannon> m_TurretCannon;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
+	TArray<TSubclassOf<class ATowerCannon>> m_TowerCannonsToSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tower")
+	TArray<class ATowerCannon*> Towers;
 
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
-	//TSubclassOf<class AProjectile> m_ProjectileToSpawn;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PlayerController")
+	TObjectPtr<APlayerController> m_PlayerController;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<class USpringArmComponent> CameraBoom;
@@ -53,19 +54,7 @@ protected:
 	TSubclassOf<class UUserWidget> m_PlayerHUDClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
-	TObjectPtr<class UGameOverHUD> m_GameOverHUD;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
 	TSubclassOf<class UGameOverHUD> m_GameOverHUDClass;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
-	TObjectPtr<class ATowerCannon> m_TurretCannon;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
-	TArray<TSubclassOf<class ATowerCannon>> m_TowerCannonsToSpawn;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "UI")
-	TArray<class ATowerCannon*> Towers;
 
 	int m_TowersIndex;
 

@@ -57,8 +57,6 @@ void AEnemySpawner::SpawnEnemy()
 	if (IsValid(enemy))
 	{
 		enemy->Init(m_Health, m_Damage, m_MoveSpeed, m_AttackRange, m_WaveManager);
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Enemy Spawned"));
 		m_WaveManager->AddToEnemyArray(enemy);
 	}
 }

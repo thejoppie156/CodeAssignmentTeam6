@@ -9,10 +9,15 @@
 
 // Sets default values
 ATowerCannon::ATowerCannon():
-	m_RotationSpeed(1),
-	m_FireRate(.7f),
-	m_Damage(2),
-	m_FireRateTimer(m_FireRate)
+	m_RotationSpeed(.4f),
+	m_FireRate(.8f),
+	m_FireRateTimer(m_FireRate),
+	m_Damage(4),
+	TurretCannonMesh(nullptr),
+	ProjectileSpawn(nullptr),
+	m_ProjectileToSpawn(nullptr),
+	TurretCannonPivot(nullptr),
+	TowerBase(nullptr)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -30,12 +35,7 @@ ATowerCannon::ATowerCannon():
 void ATowerCannon::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	TowerBase = Cast<ATowerBase>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
-	if (IsValid(TowerBase))
-	{
 
-	}
 }
 
 // Called every frame
@@ -53,8 +53,6 @@ void ATowerCannon::Fire()
 {
 	if (m_FireRateTimer >= m_FireRate)
 	{
-		if (GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Shoot via Towerbase!"));
 		m_FireRateTimer -= m_FireRate;
 		if (IsValid(m_ProjectileToSpawn))
 		{
@@ -72,8 +70,11 @@ void ATowerCannon::Fire()
 			if (IsValid(projectile))
 				projectile->Init(m_Damage, 1500);
 		}
-
 	}
+}
+
+void ATowerCannon::OnMouseReleased()
+{
 }
 
 void ATowerCannon::LookAtMouse()
@@ -81,13 +82,12 @@ void ATowerCannon::LookAtMouse()
 	FHitResult hit;
 	UGameplayStatics::GetPlayerController(GetWorld(),0)->GetHitResultUnderCursor(ECC_Visibility, false, hit);
 
-
 	if (hit.bBlockingHit)
 	{
 		DrawDebugLine(GetWorld(), ProjectileSpawn->GetComponentLocation(), hit.ImpactPoint, FColor::Red);
 
 		FRotator newRotation = (hit.ImpactPoint - TurretCannonPivot->GetComponentLocation()).Rotation();
-		TurretCannonPivot->SetWorldRotation(newRotation);
+		TurretCannonPivot->SetWorldRotation(FQuat::Slerp(GetActorRotation().Quaternion(), newRotation.Quaternion(), m_RotationSpeed));
 	}
 }
 
@@ -114,6 +114,5 @@ const TObjectPtr<class TurretDataAsset> ATowerCannon::GetTurretData() const
 void ATowerCannon::HideInGame(bool hide)
 {
 	SetActorHiddenInGame(hide);
-	SetActorEnableCollision(!hide);
 	SetActorTickEnabled(!hide);
 }

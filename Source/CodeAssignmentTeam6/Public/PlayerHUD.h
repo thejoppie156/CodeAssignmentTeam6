@@ -19,10 +19,7 @@ public:
 	void AddScore(int score);
 
 protected:
-	void Construct(const class FArguments& InArgs);
-	
 	virtual void NativeOnInitialized() override;
-	virtual void NativeConstruct() override;
 	
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	TObjectPtr<class UProgressBar> m_HealthBar;
@@ -36,6 +33,6 @@ protected:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	TObjectPtr<class UCanvasPanel> m_Canvas;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	int Score;
 };

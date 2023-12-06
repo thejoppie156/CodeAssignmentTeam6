@@ -6,7 +6,10 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-AEnemyAIController::AEnemyAIController()
+AEnemyAIController::AEnemyAIController():
+	BehaviorTree(nullptr),
+	BehaviorTreeComponent(nullptr),
+	BlackboardComponent(nullptr)
 {
 	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("Behavior Tree"));
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard Component"));

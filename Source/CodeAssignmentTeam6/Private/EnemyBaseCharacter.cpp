@@ -12,14 +12,15 @@
 #include "PlayerHUD.h"
 
 // Sets default values
-AEnemyBaseCharacter::AEnemyBaseCharacter():
+AEnemyBaseCharacter::AEnemyBaseCharacter() :
 	EnemyMesh(nullptr),
 	m_Health(5),
 	m_MoveSpeed(150),
 	m_Range(150),
 	m_Damage(2),
 	m_AttackRate(1),
-	m_AttackTimer(m_AttackRate)
+	m_AttackTimer(m_AttackRate),
+	m_WaveManager(nullptr)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -27,10 +28,11 @@ AEnemyBaseCharacter::AEnemyBaseCharacter():
 	EnemyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	EnemyMesh->SetupAttachment(RootComponent);
 
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Rotate character to moving direction
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+	GetCharacterMovement()->MaxWalkSpeed = m_MoveSpeed;
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }

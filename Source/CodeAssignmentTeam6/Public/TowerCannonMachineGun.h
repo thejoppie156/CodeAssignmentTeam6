@@ -20,9 +20,9 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Fire() override;
-	
+	virtual void OnMouseReleased() override;
+
 	UPROPERTY(EditAnywhere)
 	float m_WindUpTimer;
 	float m_WindUpTime;
-
 };

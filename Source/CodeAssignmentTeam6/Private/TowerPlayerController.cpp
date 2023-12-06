@@ -12,7 +12,8 @@
 
 ATowerPlayerController::ATowerPlayerController():
 	InputActions(nullptr),
-	InputMapping(nullptr)
+	InputMapping(nullptr),
+	m_ControlledTower(nullptr)
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -23,13 +24,12 @@ void ATowerPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-	{
 		Subsystem->AddMappingContext(InputMapping, 0);
-	}
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInputComponent->BindAction(InputActions->Shoot, ETriggerEvent::Triggered, this, &ATowerPlayerController::OnShoot);
+		EnhancedInputComponent->BindAction(InputActions->Shoot, ETriggerEvent::Completed, this, &ATowerPlayerController::OnShootReleased);
 
 		EnhancedInputComponent->BindAction(InputActions->SwapTurretCannon, ETriggerEvent::Started, this, &ATowerPlayerController::OnSwapTurretCannon);
 		if (GEngine)
@@ -37,26 +37,31 @@ void ATowerPlayerController::SetupInputComponent()
 	}
 }
 
+void ATowerPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	m_ControlledTower = Cast<ATowerBase>(GetPawn());
+}
+
 void ATowerPlayerController::OnShoot()
 {
-	ATowerBase* ControlledTower = Cast<ATowerBase>(GetPawn());
-	if (ControlledTower != nullptr)
-	{
-		ControlledTower->OnShoot();
-	}
+	if (IsValid(m_ControlledTower))
+		m_ControlledTower->OnShoot();	
+}
+
+void ATowerPlayerController::OnShootReleased()
+{
+	if (IsValid(m_ControlledTower))
+		m_ControlledTower->OnShootReleased();
 }
 
 void ATowerPlayerController::OnSwapTurretCannon(const FInputActionValue& val)
 {
-	ATowerBase* ControlledTower = Cast<ATowerBase>(GetPawn());
-	if (ControlledTower != nullptr)
+	if (IsValid(m_ControlledTower))
 	{
 		const float swapValue = val.Get<float>();
 		if (swapValue != 0)
-		{
-			ControlledTower->OnSwapTurret(swapValue);
-		}
-
-	}
-	
+			m_ControlledTower->OnSwapTurret(swapValue);
+	}	
 }

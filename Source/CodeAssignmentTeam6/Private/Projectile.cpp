@@ -9,6 +9,7 @@
 // Sets default values
 AProjectile::AProjectile() :
 	Projectile(nullptr),
+	m_RandomAngle(0),
 	m_ProjectileSpeed(1500),
 	m_Damage(2)
 {
@@ -41,16 +42,12 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Overlapped!"));
 	if (IsValid(OtherActor) && OtherActor != this)
 	{
 		AEnemyBaseCharacter* enemy = Cast<AEnemyBaseCharacter>(OtherActor);
-		if (IsValid(enemy)) //Enemy class check
+		if (IsValid(enemy))
 		{
 			UGameplayStatics::ApplyDamage(enemy, m_Damage, nullptr, this, UDamageType::StaticClass());
-			if (GEngine)
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Hit enemy: %s"), *enemy->GetName()));
 		}
 	}
 	Destroy();

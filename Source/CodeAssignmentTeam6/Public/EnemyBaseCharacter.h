@@ -24,14 +24,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<UStaticMeshComponent> EnemyMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	int m_Health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float m_MoveSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float m_Range;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	int m_Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float m_AttackRate;
 	float m_AttackTimer;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<class AWaveManager> m_WaveManager;
 public:	
 	// Called every frame

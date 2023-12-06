@@ -20,18 +20,22 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	int m_Health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float m_MoveSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	int m_Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float m_AttackRange;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
 	float m_SpawnInterval;
 	float m_SpawnTimer;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy")
 	TSubclassOf<class AEnemyBaseCharacter> m_EnemyToSpawn;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<class AWaveManager> m_WaveManager;
 public:	
 	// Called every frame

@@ -23,15 +23,9 @@ void UPlayerHUD::AddScore(int score)
 
 	if (m_ScoreText)
 	{
-		//FString::Printf(TEXT("Tower Hit for: %f amount of damage"), Score);
 		FString text = FString::Printf(TEXT("Score: %i"), Score);
 		m_ScoreText->SetText(FText::FromString(text));
 	}
-}
-
-void UPlayerHUD::Construct(const FArguments& InArgs)
-{
-	
 }
 
 void UPlayerHUD::NativeOnInitialized()
@@ -39,18 +33,9 @@ void UPlayerHUD::NativeOnInitialized()
 	Super::NativeOnInitialized();
 
 	Score = 0;
-}
-
-void UPlayerHUD::NativeConstruct()
-{
-	Super::NativeConstruct();
 
 	if (m_ScoreText)
 	{
 		m_ScoreText->SetText(FText::FromString(TEXT("Score: 0")));
 	}
-	//bind delegates
-	//defaul appearance
-	//change widget to WBP_
-
 }
