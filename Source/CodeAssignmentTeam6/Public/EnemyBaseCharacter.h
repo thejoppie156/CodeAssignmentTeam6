@@ -24,17 +24,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
 	TObjectPtr<UStaticMeshComponent> EnemyMesh;
 
-	UPROPERTY()
 	int m_Health;
-
-	UPROPERTY()
 	float m_MoveSpeed;
-
 	float m_Range;
 	int m_Damage;
 	float m_AttackRate;
 	float m_AttackTimer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
+	TObjectPtr<class AWaveManager> m_WaveManager;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -46,5 +44,5 @@ public:
 	virtual float TakeDamage(float DamageAmount, const FDamageEvent& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	virtual void Attack();
-	void Init(int health, int damage, float moveSpeed, float attackRange);
+	void Init(int health, int damage, float moveSpeed, float attackRange, class AWaveManager* waveManager);
 };

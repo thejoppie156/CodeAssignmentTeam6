@@ -29,7 +29,7 @@ protected:
 	float m_SpawnInterval;
 	float m_SpawnTimer;
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy")
 	TSubclassOf<class AEnemyBaseCharacter> m_EnemyToSpawn;
 	UPROPERTY()
 	TObjectPtr<class AWaveManager> m_WaveManager;

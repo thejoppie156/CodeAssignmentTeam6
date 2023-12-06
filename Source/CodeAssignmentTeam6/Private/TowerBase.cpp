@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Projectile.h"
+#include "PlayerHUD.h"
 
 // Sets default values
 ATowerBase::ATowerBase() :
@@ -51,6 +52,8 @@ ATowerBase::ATowerBase() :
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraBoom);
 	Camera->bUsePawnControlRotation = false;
+
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +62,14 @@ void ATowerBase::BeginPlay()
 	Super::BeginPlay();
 
 	m_PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	m_PlayerHUD = Cast<UPlayerHUD>(CreateWidget(GetWorld(), m_PlayerHUDClass));
+	if (IsValid(m_PlayerHUD))
+	{		
+		FInputModeGameOnly mode;
+		m_PlayerController->SetInputMode(mode);
+		m_PlayerHUD->AddToViewport();
+	}	
 }
 
 void ATowerBase::LookAtMouse()

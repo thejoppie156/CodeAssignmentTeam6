@@ -49,7 +49,6 @@ void AProjectile::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCompone
 		if (IsValid(enemy)) //Enemy class check
 		{
 			UGameplayStatics::ApplyDamage(enemy, m_Damage, nullptr, this, UDamageType::StaticClass());
-			//-Enemy hp	
 			if (GEngine)
 				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Hit enemy: %s"), *enemy->GetName()));
 		}

@@ -8,6 +8,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "WaveManager.h"
 
 // Sets default values
 AEnemyBaseCharacter::AEnemyBaseCharacter():
@@ -29,6 +30,8 @@ AEnemyBaseCharacter::AEnemyBaseCharacter():
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned
@@ -68,6 +71,7 @@ float AEnemyBaseCharacter::TakeDamage(float DamageAmount, const FDamageEvent& Da
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Hit for: %f amount of damage"), DamageAmount));
 	if (m_Health <= 0)
 	{
+		m_WaveManager->RemoveFromEnemyArray(this);
 		Destroy();
 	}
 	return DamageAmount;
@@ -78,6 +82,10 @@ void AEnemyBaseCharacter::Attack()
 	UGameplayStatics::ApplyDamage(Tower, m_Damage, GetController(), this, UDamageType::StaticClass());
 }
 
-void AEnemyBaseCharacter::Init(int health, int damage, float moveSpeed, float attackRange)
+void AEnemyBaseCharacter::Init(int health, int damage, float moveSpeed, float attackRange, AWaveManager* waveManager)
 {
+	m_Health = health;
+	m_Damage = damage;
+	m_MoveSpeed = moveSpeed;
+	m_WaveManager = waveManager;
 }
