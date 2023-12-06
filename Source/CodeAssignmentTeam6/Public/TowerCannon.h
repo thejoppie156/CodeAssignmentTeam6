@@ -47,14 +47,13 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Fire();
-	virtual void OnMouseReleased();
+	virtual void Reset();
 
 	void LookAtMouse();
 
 	constexpr float GetRotationSpeed() const;
 	constexpr float GetFireRate() const;
 	constexpr int GetDamage() const;
-	const TObjectPtr<class TurretDataAsset> GetTurretData() const;
 
 	void HideInGame(bool hide);
 };

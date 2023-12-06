@@ -26,17 +26,20 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UTextBlock> m_GameOverText;
+	TObjectPtr<class UTextBlock> m_GameOverText;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UTextBlock> m_RetryButtonText;
+	TObjectPtr<class UTextBlock> m_RetryButtonText;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UTextBlock> m_QuitButtonText;
+	TObjectPtr<class UTextBlock> m_QuitButtonText;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UButton> m_QuitButton;
+	TObjectPtr<class UButton> m_QuitButton;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UButton> m_RetryButton;
+	TObjectPtr<class UButton> m_RetryButton;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	TObjectPtr<class UCanvasPanel > m_Canvas;
 };

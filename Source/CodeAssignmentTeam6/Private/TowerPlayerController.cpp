@@ -9,6 +9,7 @@
 #include "Engine/LocalPlayer.h"
 #include "InputConfigData.h"
 #include "InputActionValue.h"
+#include "InputAction.h"
 
 ATowerPlayerController::ATowerPlayerController():
 	InputActions(nullptr),

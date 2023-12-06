@@ -12,7 +12,7 @@ ATowerCannon::ATowerCannon():
 	m_RotationSpeed(.4f),
 	m_FireRate(.8f),
 	m_FireRateTimer(m_FireRate),
-	m_Damage(4),
+	m_Damage(5),
 	TurretCannonMesh(nullptr),
 	ProjectileSpawn(nullptr),
 	m_ProjectileToSpawn(nullptr),
@@ -73,7 +73,7 @@ void ATowerCannon::Fire()
 	}
 }
 
-void ATowerCannon::OnMouseReleased()
+void ATowerCannon::Reset()
 {
 }
 
@@ -104,11 +104,6 @@ constexpr float ATowerCannon::GetFireRate() const
 constexpr int ATowerCannon::GetDamage() const
 {
 	return m_Damage;
-}
-
-const TObjectPtr<class TurretDataAsset> ATowerCannon::GetTurretData() const
-{
-	return TObjectPtr<class TurretDataAsset>();
 }
 
 void ATowerCannon::HideInGame(bool hide)

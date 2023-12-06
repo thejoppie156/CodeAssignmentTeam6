@@ -3,10 +3,6 @@
 
 #include "TowerBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
-#include "InputMappingContext.h"
-#include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Projectile.h"
@@ -103,10 +99,15 @@ void ATowerBase::OnSwapTurret(float val)
 	if (m_TowersIndex == index)
 		return;
 
+	FRotator temp = Towers[m_TowersIndex]->GetActorRotation();
 	m_TowersIndex = index;
+
 	m_TurretCannon->HideInGame(true);
+	m_TurretCannon->Reset();
 	m_TurretCannon = Towers[m_TowersIndex];
+
 	m_TurretCannon->HideInGame(false);
+	m_TurretCannon->SetActorRotation(temp);
 }
 
 void ATowerBase::OnShoot()
@@ -118,7 +119,7 @@ void ATowerBase::OnShoot()
 void ATowerBase::OnShootReleased()
 {
 	if (IsValid(m_TurretCannon))
-		m_TurretCannon->OnMouseReleased();
+		m_TurretCannon->Reset();
 }
 
 // Called every frame

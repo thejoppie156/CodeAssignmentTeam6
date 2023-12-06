@@ -7,13 +7,17 @@
 #include "Math/UnrealMathUtility.h"
 
 ATowerCannonMachineGun::ATowerCannonMachineGun() :
+	m_IncreaseFireRate(.02f),
+	m_MaxFireRate(.1f),
+	m_BaseFireRate(m_FireRate),
 	m_WindUpTimer(.7f),
 	m_WindUpTime(0)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	m_FireRate = 0.2f;
+	m_FireRate = 0.3f;
+	m_BaseFireRate = m_FireRate;
 	m_RotationSpeed = 0.1f;
 	m_Damage = 2;
 }
@@ -21,6 +25,8 @@ ATowerCannonMachineGun::ATowerCannonMachineGun() :
 void ATowerCannonMachineGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	m_FireRate = 0.3f;
 }
 
 void ATowerCannonMachineGun::Tick(float DeltaTime)
@@ -37,6 +43,10 @@ void ATowerCannonMachineGun::Fire()
 		if (m_FireRateTimer >= m_FireRate)
 		{
 			m_FireRateTimer -= m_FireRate;
+			m_FireRate -= m_IncreaseFireRate;
+			m_FireRate = FMath::Clamp(m_FireRate, m_MaxFireRate, m_BaseFireRate);
+			if (GEngine)
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("fire rate: %f!"),m_FireRate));
 			if (IsValid(m_ProjectileToSpawn))
 			{
 				FTransform Spawn;
@@ -57,7 +67,8 @@ void ATowerCannonMachineGun::Fire()
 	}
 }
 
-void ATowerCannonMachineGun::OnMouseReleased()
+void ATowerCannonMachineGun::Reset()
 {
 	m_WindUpTime = 0;
+	m_FireRate = m_BaseFireRate;
 }

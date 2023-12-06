@@ -4,7 +4,6 @@
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyBaseCharacter.h"
-#include "DrawDebugHelpers.h"
 
 // Sets default values
 AProjectile::AProjectile() :
@@ -36,7 +35,6 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector()* 100,FColor::Yellow);
 	SetActorLocation(GetActorLocation() + GetActorForwardVector() * m_ProjectileSpeed * DeltaTime);
 }
 

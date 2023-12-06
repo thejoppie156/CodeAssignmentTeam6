@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "InputAction.h"
 #include "InputConfigData.generated.h"
 
 /**
@@ -16,8 +15,8 @@ class CODEASSIGNMENTTEAM6_API UInputConfigData : public UDataAsset
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UInputAction* Shoot;
+	TObjectPtr<class UInputAction> Shoot;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UInputAction* SwapTurretCannon;
+	TObjectPtr<class UInputAction> SwapTurretCannon;
 };

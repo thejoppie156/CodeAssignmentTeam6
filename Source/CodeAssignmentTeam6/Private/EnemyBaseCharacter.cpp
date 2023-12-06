@@ -17,7 +17,7 @@ AEnemyBaseCharacter::AEnemyBaseCharacter() :
 	m_Health(5),
 	m_MoveSpeed(150),
 	m_Range(150),
-	m_Damage(2),
+	m_Damage(5),
 	m_ScoreAmount(1),
 	m_AttackRate(1),
 	m_AttackTimer(m_AttackRate),
@@ -71,8 +71,6 @@ void AEnemyBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 float AEnemyBaseCharacter::TakeDamage(float DamageAmount, const FDamageEvent& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	m_Health -= DamageAmount;
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Hit for: %f amount of damage"), DamageAmount));
 	if (m_Health <= 0)
 	{
 		Cast<ATowerBase>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0))->GetPlayerHUD()->AddScore(m_ScoreAmount);

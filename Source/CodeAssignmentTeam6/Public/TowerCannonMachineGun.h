@@ -20,9 +20,14 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Fire() override;
-	virtual void OnMouseReleased() override;
+	virtual void Reset() override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
+	float m_IncreaseFireRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
+	float m_MaxFireRate;
+	float m_BaseFireRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
 	float m_WindUpTimer;
 	float m_WindUpTime;
 };

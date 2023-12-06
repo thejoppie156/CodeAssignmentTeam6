@@ -5,7 +5,6 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Components/CanvasPanel.h"
-#include "Components/CanvasPanelSlot.h"
 
 void UPlayerHUD::SetHealth(float currentHealth, float maxHealth)
 {

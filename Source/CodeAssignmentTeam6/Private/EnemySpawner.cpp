@@ -6,6 +6,7 @@
 #include "EnemyBaseCharacter.h"
 #include "WaveManager.h"
 #include "Kismet/GameplayStatics.h"
+
 // Sets default values
 AEnemySpawner::AEnemySpawner() :
 	m_Health(5),
