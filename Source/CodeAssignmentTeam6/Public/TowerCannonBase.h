@@ -39,6 +39,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual void Fire();
+
 	constexpr float GetRotationSpeed() const;
 	constexpr float GetFireRate() const;
 	constexpr int GetDamage() const;

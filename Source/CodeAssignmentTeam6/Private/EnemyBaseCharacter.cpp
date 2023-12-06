@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "WaveManager.h"
+#include "PlayerHUD.h"
 
 // Sets default values
 AEnemyBaseCharacter::AEnemyBaseCharacter():
@@ -71,6 +72,7 @@ float AEnemyBaseCharacter::TakeDamage(float DamageAmount, const FDamageEvent& Da
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("Hit for: %f amount of damage"), DamageAmount));
 	if (m_Health <= 0)
 	{
+		Cast<ATowerBase>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0))->GetPlayerHUD()->AddScore(1);
 		m_WaveManager->RemoveFromEnemyArray(this);
 		Destroy();
 	}

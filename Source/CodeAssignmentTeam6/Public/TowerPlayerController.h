@@ -18,6 +18,7 @@ public:
 protected:
 	virtual void SetupInputComponent() override;
 	void OnShoot();
+	void OnSwapTurretCannon(const struct FInputActionValue& Value);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 	class UInputConfigData* InputActions;

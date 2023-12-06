@@ -16,25 +16,26 @@ class CODEASSIGNMENTTEAM6_API UPlayerHUD : public UUserWidget
 public:
 	void SetHealth(float currentHealth, float maxHealth);
 
-	void SetScore(int score);
+	void AddScore(int score);
 
 protected:
 	void Construct(const class FArguments& InArgs);
-
+	
+	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
+	
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	TObjectPtr<class UProgressBar> m_HealthBar;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UProgressBar> m_HealthBar;
+	TObjectPtr<class UTextBlock> m_ScoreText;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UTextBlock> m_ScoreText;
+	TObjectPtr<class UTextBlock> m_HealthText;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UButton> m_StartButton;
+	TObjectPtr<class UCanvasPanel> m_Canvas;
 
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UButton> m_RetryButton;
-
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-		TObjectPtr<class UCanvasPanel> m_Canvas;
+	UPROPERTY()
+	int Score;
 };

@@ -12,6 +12,8 @@
 #include "Camera/CameraComponent.h"
 #include "Projectile.h"
 #include "PlayerHUD.h"
+#include "GameOverHUD.h"
+#include "TowerCannon.h"
 
 // Sets default values
 ATowerBase::ATowerBase() :
@@ -19,11 +21,11 @@ ATowerBase::ATowerBase() :
 	m_Health(m_MaxHealth),
 	TurretBase(nullptr),
 	TowerCannonComponent(nullptr),
-	TurretCannon(nullptr),
+	//TurretCannon(nullptr),
 	TurretCannonAttachPoint(nullptr),
 	m_PlayerController(nullptr),
-	ProjectileSpawn(nullptr),
-	m_ProjectileToSpawn(nullptr),
+	//ProjectileSpawn(nullptr),
+	//m_ProjectileToSpawn(nullptr),
 	CameraBoom(nullptr),
 	Camera(nullptr)
 {
@@ -32,15 +34,15 @@ ATowerBase::ATowerBase() :
 
 	TurretBase = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TowerBase"));
 	TurretCannonAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("TowerCannonPivot"));
-	TurretCannon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TowerCannon"));
-	ProjectileSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawn"));
+	//m_TurretCannon = CreateDefaultSubobject<UChildActorComponent>(TEXT("TowerCannon"));
+	//ProjectileSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawn"));
 
 	TowerCannonComponent = CreateDefaultSubobject<UTowerCannonBase>(TEXT("TowerCannonActorComponent"));
 
 	TurretBase->SetupAttachment(GetRootComponent());
 	TurretCannonAttachPoint->SetupAttachment(TurretBase);
-	TurretCannon->SetupAttachment(TurretCannonAttachPoint);
-	ProjectileSpawn->SetupAttachment(TurretCannon);
+	//m_TurretCannon->SetupAttachment(TurretCannonAttachPoint);
+	//ProjectileSpawn->SetupAttachment(TurretCannon);
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(TurretBase);
@@ -66,31 +68,67 @@ void ATowerBase::BeginPlay()
 	m_PlayerHUD = Cast<UPlayerHUD>(CreateWidget(GetWorld(), m_PlayerHUDClass));
 	if (IsValid(m_PlayerHUD))
 	{		
-		FInputModeGameOnly mode;
-		m_PlayerController->SetInputMode(mode);
+		//FInputModeGameOnly mode;
+		//m_PlayerController->SetInputMode(mode);
 		m_PlayerHUD->AddToViewport();
-	}	
+
+		m_PlayerHUD->SetHealth(m_Health, 100);
+	}
+	for (TSubclassOf<ATowerCannon>& turretCannonclass : m_TowerCannonsToSpawn)
+	{
+		ATowerCannon* tower = GetWorld()->SpawnActor<ATowerCannon>(turretCannonclass, TurretCannonAttachPoint->GetComponentTransform());
+		tower->AttachToComponent(TurretCannonAttachPoint, FAttachmentTransformRules::KeepWorldTransform);
+		Towers.Add(tower);
+		tower->HideInGame(true);
+	}
+	
+	if (Towers.Num()!=0)
+	{
+		m_TurretCannon = Towers[0];
+		m_TurretCannon->HideInGame(false);
+	}
+	//m_TurretCannon = GetWorld()->SpawnActor<ATowerCannon>(ATowerCannon::StaticClass(), TurretCannonAttachPoint->GetComponentTransform());
+	//m_TurretCannon; GetDefaultTurret cannon and store it as variable
+	//Attach m_TurretCannon to Attachpoint on towerbase
+	//Initialize other turret cannons and store them in Towers (so all of them are in a single array as base TurretCannon class) 
+	//Use Q and E to swap to next/previous Turret
+	//call Fire onShoot on the current m_TurretCannon for shooting
+	// 
+	//Towers.Add();
+
 }
 
-void ATowerBase::LookAtMouse()
+void ATowerBase::OnSwapTurret(float val)
 {
-	
-	FHitResult hit;
-	m_PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hit);
-
-	
-	if (hit.bBlockingHit)
-	{		
-		DrawDebugLine(GetWorld(), ProjectileSpawn->GetComponentLocation(), hit.ImpactPoint, FColor::Red);
-
-		FRotator newRotation = (hit.ImpactPoint - TurretCannonAttachPoint->GetComponentLocation()).Rotation();
-		TurretCannonAttachPoint->SetWorldRotation(newRotation);
+	int index;
+	if (Towers.IsValidIndex(m_TowersIndex + val))
+	{
+		index = m_TowersIndex + val;
 	}
+	else
+	{
+		if (val > 0)
+		{
+			index = 0;
+		}
+		else
+		{
+			index = Towers.Num() - 1;
+		}
+	}
+
+	if (m_TowersIndex == index)
+		return;
+
+	m_TowersIndex = index;	
+	m_TurretCannon->HideInGame(true);
+	m_TurretCannon = Towers[m_TowersIndex];
+	m_TurretCannon->HideInGame(false);
 }
 
 void ATowerBase::OnShoot()
 {
-	if (IsValid(TowerCannonComponent) && TowerCannonComponent->m_FireRateTimer >= TowerCannonComponent->GetFireRate())
+	/*if (IsValid(TowerCannonComponent) && TowerCannonComponent->m_FireRateTimer >= TowerCannonComponent->GetFireRate())
 	{
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Shoot via Towerbase!"));
@@ -112,18 +150,23 @@ void ATowerBase::OnShoot()
 				projectile->Init(TowerCannonComponent->GetDamage(), 1500);
 		}
 		
-	}
+	}*/
 	
 	/*if (ACTurretCannon)
 		ACTurretCannon->Fire();*/
+
+	//Call Fire on ATowerCannon
+	//TowerCannon is being inherited for each different tower (3)
+
+	
+	m_TurretCannon->Fire();
 }
 
 // Called every frame
 void ATowerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	LookAtMouse();		
+	
 }
 
 // Called to bind functionality to input
@@ -137,9 +180,23 @@ float ATowerBase::TakeDamage(float DamageAmount, const FDamageEvent& DamageEvent
 	m_Health -= DamageAmount;
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Tower Hit for: %f amount of damage"), DamageAmount));
+
+	if(IsValid(m_PlayerHUD))
+		m_PlayerHUD->SetHealth(m_Health, 100);
+
 	if (m_Health <= 0)
 	{
-		Destroy();
+		m_GameOverHUD = Cast<UGameOverHUD>(CreateWidget(GetWorld(), m_GameOverHUDClass));
+		if (IsValid(m_GameOverHUD))
+		{
+			m_PlayerController->Pause();
+			m_GameOverHUD->AddToViewport();
+		}
 	}
 	return DamageAmount;
+}
+
+const TObjectPtr<UPlayerHUD> ATowerBase::GetPlayerHUD() const
+{
+	return m_PlayerHUD;
 }

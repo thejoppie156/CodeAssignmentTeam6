@@ -3,6 +3,7 @@
 
 #include "TowerCannonBase.h"
 #include "Math/UnrealMathUtility.h"
+#include "TurretDataAsset.h"
 
 // Sets default values for this component's properties
 UTowerCannonBase::UTowerCannonBase() :
@@ -44,12 +45,6 @@ void UTowerCannonBase::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UTowerCannonBase::Fire()
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Shoot via TowerComponent!"));
-	if (m_FireRateTimer >= m_FireRate)
-	{
-		m_FireRateTimer -= m_FireRate;
-	}
 }
 
 constexpr float UTowerCannonBase::GetRotationSpeed() const

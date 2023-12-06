@@ -8,6 +8,7 @@
 #include "TowerBase.h"
 #include "Engine/LocalPlayer.h"
 #include "InputConfigData.h"
+#include "InputActionValue.h"
 
 ATowerPlayerController::ATowerPlayerController():
 	InputActions(nullptr),
@@ -29,6 +30,8 @@ void ATowerPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInputComponent->BindAction(InputActions->Shoot, ETriggerEvent::Triggered, this, &ATowerPlayerController::OnShoot);
+
+		EnhancedInputComponent->BindAction(InputActions->SwapTurretCannon, ETriggerEvent::Started, this, &ATowerPlayerController::OnSwapTurretCannon);
 		if (GEngine)
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Input Created!"));
 	}
@@ -41,4 +44,19 @@ void ATowerPlayerController::OnShoot()
 	{
 		ControlledTower->OnShoot();
 	}
+}
+
+void ATowerPlayerController::OnSwapTurretCannon(const FInputActionValue& val)
+{
+	ATowerBase* ControlledTower = Cast<ATowerBase>(GetPawn());
+	if (ControlledTower != nullptr)
+	{
+		const float swapValue = val.Get<float>();
+		if (swapValue != 0)
+		{
+			ControlledTower->OnSwapTurret(swapValue);
+		}
+
+	}
+	
 }

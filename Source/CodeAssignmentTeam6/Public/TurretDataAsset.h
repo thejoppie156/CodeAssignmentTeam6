@@ -17,7 +17,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UStaticMesh> Turret;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UStaticMesh> Projectile;
+	TObjectPtr<UStaticMesh> ProjectileMesh;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<class AProjectile> m_ProjectileClass;
 
 	float m_ProjectileSpeed;
 };
